@@ -1,12 +1,15 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.decorators import permission_classes
 
 from .models import Trabajador, Asistencia, Accidente, EficienciaTrabajador, DesempenoTrabajador, SueldoTrabajador
 from .serializers import TrabajadorSerializer,  AsistenciaSerializer, AccidenteSerializer, EficienciaTrabajadorSerializer, DesempenoTrabajadorSerializer,SueldoTrabajadorSerializer
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def trabajador_list(request):
     """
     GET  /api/trabajadores/      → lista todos
@@ -26,6 +29,7 @@ def trabajador_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def trabajador_detail(request, pk):
     """
     GET    /api/trabajadores/<pk>/   → detalle
@@ -54,6 +58,7 @@ def trabajador_detail(request, pk):
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def asistencia_list(request):
     """
     GET  /api/asistencias/      → lista todas
@@ -73,6 +78,7 @@ def asistencia_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def asistencia_detail(request, pk):
     """
     GET    /api/asistencias/<pk>/   → detalle
@@ -100,6 +106,7 @@ def asistencia_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def accidente_list(request):
     """
     GET  /api/accidentes/      → lista todos
@@ -118,6 +125,7 @@ def accidente_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def accidente_detail(request, pk):
     """
     GET    /api/accidentes/<pk>/   → detalle
