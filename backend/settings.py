@@ -147,3 +147,15 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'Token-based authentication with required prefix "Token". Ej: Token 123abc...'
+        }
+    },
+    'USE_SESSION_AUTH': False,   # evita login por sesión / Basic
+}
