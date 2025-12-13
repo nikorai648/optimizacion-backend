@@ -153,6 +153,7 @@ def accidente_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def eficiencia_list(request):
     if request.method == 'GET':
         eficiencias = EficienciaTrabajador.objects.all()
@@ -167,6 +168,7 @@ def eficiencia_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def eficiencia_detail(request, pk):
     try:
         eficiencia = EficienciaTrabajador.objects.get(pk=pk)
@@ -189,6 +191,7 @@ def eficiencia_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def desempeno_list(request):
     if request.method == 'GET':
         desempenos = DesempenoTrabajador.objects.all()
@@ -203,6 +206,7 @@ def desempeno_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def desempeno_detail(request, pk):
     try:
         desempeno = DesempenoTrabajador.objects.get(pk=pk)
