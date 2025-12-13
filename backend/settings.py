@@ -154,7 +154,7 @@ SWAGGER_SETTINGS = {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header',
-            'description': 'Token-based authentication with required prefix "Token". Ej: Token 123abc...'
+           'description': 'Escribe: Token <tu_token>',
         }
     },
     'USE_SESSION_AUTH': False,   # evita login por sesión / Basic
