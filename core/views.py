@@ -1,16 +1,29 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+
 from drf_spectacular.utils import extend_schema
 
-from .models import Trabajador, Asistencia, Accidente, EficienciaTrabajador, DesempenoTrabajador, SueldoTrabajador
-from .serializers import TrabajadorSerializer,  AsistenciaSerializer, AccidenteSerializer, EficienciaTrabajadorSerializer, DesempenoTrabajadorSerializer, SueldoTrabajadorSerializer
+from .models import (
+    Trabajador, Asistencia, Accidente,
+    EficienciaTrabajador, DesempenoTrabajador, SueldoTrabajador
+)
+from .serializers import (
+    TrabajadorSerializer, AsistenciaSerializer, AccidenteSerializer,
+    EficienciaTrabajadorSerializer, DesempenoTrabajadorSerializer, SueldoTrabajadorSerializer
+)
 
 
+# =========================
+# TRABAJADORES
+# =========================
+
+@extend_schema(methods=['GET'], responses=TrabajadorSerializer(many=True))
+@extend_schema(methods=['POST'], request=TrabajadorSerializer, responses=TrabajadorSerializer)
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -32,6 +45,9 @@ def trabajador_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(methods=['GET'], responses=TrabajadorSerializer)
+@extend_schema(methods=['PUT'], request=TrabajadorSerializer, responses=TrabajadorSerializer)
+@extend_schema(methods=['DELETE'], responses=None)
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -62,6 +78,12 @@ def trabajador_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# =========================
+# ASISTENCIAS
+# =========================
+
+@extend_schema(methods=['GET'], responses=AsistenciaSerializer(many=True))
+@extend_schema(methods=['POST'], request=AsistenciaSerializer, responses=AsistenciaSerializer)
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -83,6 +105,9 @@ def asistencia_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(methods=['GET'], responses=AsistenciaSerializer)
+@extend_schema(methods=['PUT'], request=AsistenciaSerializer, responses=AsistenciaSerializer)
+@extend_schema(methods=['DELETE'], responses=None)
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -113,11 +138,12 @@ def asistencia_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# ✅ AQUÍ VA EL extend_schema (en accidentes, porque Swagger no te mostraba el Request body)
-@extend_schema(
-    request=AccidenteSerializer,
-    responses=AccidenteSerializer
-)
+# =========================
+# ACCIDENTES
+# =========================
+
+@extend_schema(methods=['GET'], responses=AccidenteSerializer(many=True))
+@extend_schema(methods=['POST'], request=AccidenteSerializer, responses=AccidenteSerializer)
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -139,6 +165,9 @@ def accidente_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(methods=['GET'], responses=AccidenteSerializer)
+@extend_schema(methods=['PUT'], request=AccidenteSerializer, responses=AccidenteSerializer)
+@extend_schema(methods=['DELETE'], responses=None)
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -169,6 +198,12 @@ def accidente_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# =========================
+# EFICIENCIAS
+# =========================
+
+@extend_schema(methods=['GET'], responses=EficienciaTrabajadorSerializer(many=True))
+@extend_schema(methods=['POST'], request=EficienciaTrabajadorSerializer, responses=EficienciaTrabajadorSerializer)
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -186,6 +221,9 @@ def eficiencia_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(methods=['GET'], responses=EficienciaTrabajadorSerializer)
+@extend_schema(methods=['PUT'], request=EficienciaTrabajadorSerializer, responses=EficienciaTrabajadorSerializer)
+@extend_schema(methods=['DELETE'], responses=None)
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -211,6 +249,12 @@ def eficiencia_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# =========================
+# DESEMPEÑOS
+# =========================
+
+@extend_schema(methods=['GET'], responses=DesempenoTrabajadorSerializer(many=True))
+@extend_schema(methods=['POST'], request=DesempenoTrabajadorSerializer, responses=DesempenoTrabajadorSerializer)
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -228,6 +272,9 @@ def desempeno_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(methods=['GET'], responses=DesempenoTrabajadorSerializer)
+@extend_schema(methods=['PUT'], request=DesempenoTrabajadorSerializer, responses=DesempenoTrabajadorSerializer)
+@extend_schema(methods=['DELETE'], responses=None)
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -253,6 +300,12 @@ def desempeno_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# =========================
+# SUELDOS
+# =========================
+
+@extend_schema(methods=['GET'], responses=SueldoTrabajadorSerializer(many=True))
+@extend_schema(methods=['POST'], request=SueldoTrabajadorSerializer, responses=SueldoTrabajadorSerializer)
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -270,6 +323,9 @@ def sueldo_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(methods=['GET'], responses=SueldoTrabajadorSerializer)
+@extend_schema(methods=['PUT'], request=SueldoTrabajadorSerializer, responses=SueldoTrabajadorSerializer)
+@extend_schema(methods=['DELETE'], responses=None)
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -294,6 +350,10 @@ def sueldo_detail(request, pk):
         sueldo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+# =========================
+# HOME
+# =========================
 
 from django.http import JsonResponse
 
