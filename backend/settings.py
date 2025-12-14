@@ -149,13 +149,14 @@ REST_FRAMEWORK = {
 }
 
 SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,  
+    'PERSIST_AUTH': True,       
     'SECURITY_DEFINITIONS': {
         'Token': {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header',
-           'description': 'Escribe: Token <tu_token>',
-        }
+            'description': 'Escribe: Token <tu_token>',
+        },
     },
-    'USE_SESSION_AUTH': False,   # evita login por sesión / Basic
 }
