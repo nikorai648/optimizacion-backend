@@ -201,6 +201,7 @@ def eficiencia_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def desempeno_list(request):
     if request.method == 'GET':
@@ -216,6 +217,7 @@ def desempeno_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def desempeno_detail(request, pk):
     try:
@@ -239,6 +241,7 @@ def desempeno_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def sueldo_list(request):
     if request.method == 'GET':
@@ -254,6 +257,7 @@ def sueldo_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
     
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def sueldo_detail(request, pk):
     try:
