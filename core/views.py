@@ -11,6 +11,7 @@ from .serializers import TrabajadorSerializer,  AsistenciaSerializer, AccidenteS
 
 
 @api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def trabajador_list(request):
     """
@@ -31,6 +32,7 @@ def trabajador_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def trabajador_detail(request, pk):
     """
@@ -60,6 +62,7 @@ def trabajador_detail(request, pk):
 
 
 @api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def asistencia_list(request):
     """
@@ -80,6 +83,7 @@ def asistencia_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def asistencia_detail(request, pk):
     """
