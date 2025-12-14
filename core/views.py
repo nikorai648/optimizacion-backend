@@ -5,9 +5,10 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema
 
 from .models import Trabajador, Asistencia, Accidente, EficienciaTrabajador, DesempenoTrabajador, SueldoTrabajador
-from .serializers import TrabajadorSerializer,  AsistenciaSerializer, AccidenteSerializer, EficienciaTrabajadorSerializer, DesempenoTrabajadorSerializer,SueldoTrabajadorSerializer
+from .serializers import TrabajadorSerializer,  AsistenciaSerializer, AccidenteSerializer, EficienciaTrabajadorSerializer, DesempenoTrabajadorSerializer, SueldoTrabajadorSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -22,14 +23,14 @@ def trabajador_list(request):
         trabajadores = Trabajador.objects.all()
         serializer = TrabajadorSerializer(trabajadores, many=True)
         return Response(serializer.data)
-    
-    
+
     if request.method == 'POST':
         serializer = TrabajadorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
@@ -55,7 +56,7 @@ def trabajador_detail(request, pk):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     if request.method == 'DELETE':
         trabajador.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -73,7 +74,7 @@ def asistencia_list(request):
         asistencias = Asistencia.objects.all()
         serializer = AsistenciaSerializer(asistencias, many=True)
         return Response(serializer.data)
-    
+
     if request.method == 'POST':
         serializer = AsistenciaSerializer(data=request.data)
         if serializer.is_valid():
@@ -95,22 +96,28 @@ def asistencia_detail(request, pk):
         asistencia = Asistencia.objects.get(pk=pk)
     except Asistencia.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
+
     if request.method == 'GET':
         serializer = AsistenciaSerializer(asistencia)
         return Response(serializer.data)
-    
+
     if request.method == 'PUT':
         serializer = AsistenciaSerializer(asistencia, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     if request.method == 'DELETE':
         asistencia.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+# ✅ AQUÍ VA EL extend_schema (en accidentes, porque Swagger no te mostraba el Request body)
+@extend_schema(
+    request=AccidenteSerializer,
+    responses=AccidenteSerializer
+)
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -123,13 +130,14 @@ def accidente_list(request):
         accidentes = Accidente.objects.all()
         serializer = AccidenteSerializer(accidentes, many=True)
         return Response(serializer.data)
-    
+
     if request.method == 'POST':
         serializer = AccidenteSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
@@ -154,12 +162,13 @@ def accidente_detail(request, pk):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
-    
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     if request.method == 'DELETE':
         accidente.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -167,14 +176,15 @@ def eficiencia_list(request):
     if request.method == 'GET':
         eficiencias = EficienciaTrabajador.objects.all()
         serializer = EficienciaTrabajadorSerializer(eficiencias, many=True)
-        return Response(serializer.data)   
-     
+        return Response(serializer.data)
+
     if request.method == 'POST':
         serializer = EficienciaTrabajadorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
@@ -187,8 +197,8 @@ def eficiencia_detail(request, pk):
 
     if request.method == 'GET':
         serializer = EficienciaTrabajadorSerializer(eficiencia)
-        return Response(serializer.data)    
-    
+        return Response(serializer.data)
+
     if request.method == 'PUT':
         serializer = EficienciaTrabajadorSerializer(eficiencia, data=request.data)
         if serializer.is_valid():
@@ -200,6 +210,7 @@ def eficiencia_detail(request, pk):
         eficiencia.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -207,7 +218,8 @@ def desempeno_list(request):
     if request.method == 'GET':
         desempenos = DesempenoTrabajador.objects.all()
         serializer = DesempenoTrabajadorSerializer(desempenos, many=True)
-        return Response(serializer.data)    
+        return Response(serializer.data)
+
     if request.method == 'POST':
         serializer = DesempenoTrabajadorSerializer(data=request.data)
         if serializer.is_valid():
@@ -224,7 +236,7 @@ def desempeno_detail(request, pk):
         desempeno = DesempenoTrabajador.objects.get(pk=pk)
     except DesempenoTrabajador.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
+
     if request.method == 'GET':
         serializer = DesempenoTrabajadorSerializer(desempeno)
         return Response(serializer.data)
@@ -240,6 +252,7 @@ def desempeno_detail(request, pk):
         desempeno.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -248,14 +261,15 @@ def sueldo_list(request):
         sueldos = SueldoTrabajador.objects.all()
         serializer = SueldoTrabajadorSerializer(sueldos, many=True)
         return Response(serializer.data)
-    
+
     if request.method == 'POST':
         serializer = SueldoTrabajadorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
-    
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -268,7 +282,7 @@ def sueldo_detail(request, pk):
     if request.method == 'GET':
         serializer = SueldoTrabajadorSerializer(sueldo)
         return Response(serializer.data)
-    
+
     if request.method == 'PUT':
         serializer = SueldoTrabajadorSerializer(sueldo, data=request.data)
         if serializer.is_valid():
@@ -279,6 +293,7 @@ def sueldo_detail(request, pk):
     if request.method == 'DELETE':
         sueldo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 from django.http import JsonResponse
 
